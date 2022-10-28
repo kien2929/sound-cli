@@ -10,7 +10,7 @@
 	},
 	"scripts": {
 		"test": "xo && ava",
-		"start": "node src/cli.js"
+		"start": "clear & node src/cli.js"
 	},
 	"files": [
 		"cli.js",
