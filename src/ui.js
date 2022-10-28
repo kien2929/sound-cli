@@ -7,6 +7,7 @@ const App = (props) => {
 	const [searchData, setSearchData] = React.useState(links)
 	const [y, setY] = React.useState(0)
 	const [text, setText] = React.useState('')
+	const [queueIndex, setQueueIndex] = React.useState(-1)
 	const [isSearch, setIsSearch] = React.useState(!links.length)
 	const [again, setAgain] = React.useState(false)
 
@@ -19,6 +20,10 @@ const App = (props) => {
 		}
 		if (input === 'q' && !text && !isSearch) {
 			props.handleAddToQueue(y)
+			setQueueIndex(y)
+			setTimeout(() => {
+				setQueueIndex(-1)
+			}, 500)
 		}
 		if (key.upArrow) {
 			setY(Math.max(0, y - 1));
@@ -53,13 +58,15 @@ const App = (props) => {
 					{searchData.map((item, index) => {
 						return (
 							<Box key={index}>
-								<Text backgroundColor={y === index ? "green" : ""}>{item.isPlaying ? "𝄞" : ""} {item.title}</Text>
+								<Text backgroundColor={y === index ? (queueIndex === index ? "red" : "green") : ""}>
+									{item.isPlaying ? "𝄞" : ""} {item.title}
+								</Text>
 							</Box>
 						)
 					})}
 				</Box>
 				<Box>
-					<Text>Press: S to search | Q to add to queue | ↕ to select | Enter to choose</Text>
+					<Text>Press: [s] to search | [q] to add to queue | ↕ to select | [Enter] to choose</Text>
 				</Box>
 			</Box>
 		)

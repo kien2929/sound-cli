@@ -45,7 +45,7 @@ const playSound = async (pagePlayer, id) => {
 }
 
 const renderList = async (pagePlayer, searchText) => {
-	const queue = []
+	let queue = []
 	let links = []
 	if (searchText)
 		links = await getLinks(searchText)
@@ -55,17 +55,21 @@ const renderList = async (pagePlayer, searchText) => {
 		{
 			links,
 			handleSelect: async (index) => {
-				for (let i = 0; i < links.length; i++) {
-					links[i].isPlaying = false
-				}
-				links[index].isPlaying = true
-				await playSound(pagePlayer, links[index].id.videoId)
-				pagePlayer.on('console', async msg => {
-					if (queue.length && msg.text() === 'stopped') {
-						await playSound(pagePlayer, queue[0].id.videoId)
-						queue.shift()
+				try {
+					for (let i = 0; i < links.length; i++) {
+						links[i].isPlaying = false
 					}
-				})
+					links[index].isPlaying = true
+					await playSound(pagePlayer, links[index].id.videoId)
+					pagePlayer.on('console', async msg => {
+						if (queue.length && msg.text() === 'stopped') {
+							await playSound(pagePlayer, queue[0].id.videoId)
+							queue.shift()
+						}
+					})
+				} catch (error) {
+					console.log(error)
+				}
 			},
 			handleAddToQueue: (index) => {
 				queue.push(links[index])
