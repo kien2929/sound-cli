@@ -67,6 +67,7 @@ const renderList = async (pagePlayer, searchText) => {
 							queue.shift()
 						}
 					})
+					return links
 				} catch (error) {
 					console.log(error)
 				}

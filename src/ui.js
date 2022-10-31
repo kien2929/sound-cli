@@ -9,7 +9,6 @@ const App = (props) => {
 	const [text, setText] = React.useState('')
 	const [queueIndex, setQueueIndex] = React.useState(-1)
 	const [isSearch, setIsSearch] = React.useState(!links.length)
-	const [again, setAgain] = React.useState(false)
 
 	useInput(async (input, key) => {
 		if (input && isSearch) {
@@ -39,16 +38,16 @@ const App = (props) => {
 			}
 		}
 		if (key.return) {
+			let data
 			if (text) {
-				let data = await props.handleSearch(text)
-				setSearchData(data)
+				data = await props.handleSearch(text)
 				setY(0)
 				setText('')
 				setIsSearch(false)
 			} else {
-				props.handleSelect(y)
-				setAgain(!again)
+				data = await props.handleSelect(y)
 			}
+			setSearchData(data)
 		}
 	})
 	if (!isSearch)
